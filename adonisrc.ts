@@ -29,6 +29,7 @@ export default defineConfig({
     () => import('@adonisjs/core/commands'),
     () => import('@adonisjs/lucid/commands'),
     () => import('@jrmc/adonis-lucid-commands/commands'),
+    () => import('@adonisjs/mail/commands'),
   ],
 
   /*
@@ -59,6 +60,7 @@ export default defineConfig({
     () => import('@adonisjs/auth/auth_provider'),
     () => import('#providers/api_provider'),
     () => import('@adonisjs/i18n/i18n_provider'),
+    () => import('@adonisjs/mail/mail_provider'),
   ],
 
   /*
@@ -113,7 +115,7 @@ export default defineConfig({
   metaFiles: [
     {
       pattern: 'resources/views/**/*.edge',
-      reloadServer: false,
+      reloadServer: true,
     },
     {
       pattern: 'public/**',

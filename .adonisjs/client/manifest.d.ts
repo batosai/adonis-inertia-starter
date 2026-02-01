@@ -3,3 +3,4 @@
 /// <reference path="../../config/hash.ts" />
 /// <reference path="../../config/i18n.ts" />
 /// <reference path="../../config/logger.ts" />
+/// <reference path="../../config/mail.ts" />
