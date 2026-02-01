@@ -12,14 +12,25 @@ import { Form } from '@adonisjs/inertia/vue'
     <div>
       <Form route="new_account.store" #default="{ processing, errors }">
         <div>
-          <label for="fullName">Full name</label>
+          <label for="fullName">First name</label>
           <input
             type="text"
-            name="fullName"
-            id="fullName"
-            :data-invalid="errors.fullName ? 'true' : undefined"
+            name="firstName"
+            id="firstName"
+            :data-invalid="errors.firstName ? 'true' : undefined"
           />
-          <div v-if="errors.fullName">{{ errors.fullName }}</div>
+          <div v-if="errors.firstName">{{ errors.firstName }}</div>
+        </div>
+
+        <div>
+          <label for="lastName">Last name</label>
+          <input
+            type="text"
+            name="lastName"
+            id="lastName"
+            :data-invalid="errors.lastName ? 'true' : undefined"
+          />
+          <div v-if="errors.lastName">{{ errors.lastName }}</div>
         </div>
 
         <div>
