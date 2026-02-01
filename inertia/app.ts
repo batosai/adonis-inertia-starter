@@ -6,6 +6,7 @@ import { createInertiaApp } from '@inertiajs/vue3'
 import { TuyauProvider } from '@adonisjs/inertia/vue'
 import { createApp, type DefineComponent, h } from 'vue'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
+import i18n from './plugins/i18n'
 
 const appName = import.meta.env.VITE_APP_NAME || 'AdonisJS'
 
@@ -19,8 +20,11 @@ createInertiaApp({
     )
   },
   setup({ el, App, props, plugin }) {
-    createApp({ render: () => h(TuyauProvider, { client }, { default: () => h(App, props) }) })
+    createApp({
+      render: () => h(TuyauProvider, { client }, { default: () => h(App, props) }),
+    })
       .use(plugin)
+      .use(i18n)
       .mount(el)
   },
   progress: {

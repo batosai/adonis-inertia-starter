@@ -6,7 +6,7 @@ import { Head } from '@inertiajs/vue3'
   <Head title="Homepage" />
 
   <div class="hero">
-    <h1>It works — welcome to the power of a full-stack Vue app</h1>
+    <h1>{{ $t('home.title') }}</h1>
     <p>
       Powered by Inertia and Vue, this setup blends server-driven routing with rich client-side
       interactivity — seamless, fast, and cohesive.
