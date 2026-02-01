@@ -64,10 +64,17 @@ export default class DetectUserLocaleMiddleware {
      * Sharing translations to inertia view
      */
     if ('inertia' in ctx) {
+      const isPartialRequest = ctx.request.header('x-inertia')
+
       ctx.inertia.share({
         locale: language,
-        translations: i18nManager.getTranslationsFor(language),
       })
+
+      if (!isPartialRequest) {
+        ctx.inertia.share({
+          translations: i18nManager.getTranslationsFor(language),
+        })
+      }
     }
 
     return next()
