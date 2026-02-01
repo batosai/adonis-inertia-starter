@@ -5,6 +5,7 @@ import { TuyauProvider } from '@adonisjs/inertia/vue'
 import { renderToString } from '@vue/server-renderer'
 import { createSSRApp, h, type DefineComponent } from 'vue'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
+import i18n from './plugins/i18n'
 
 export default function render(page: any) {
   return createInertiaApp({
@@ -20,7 +21,9 @@ export default function render(page: any) {
     setup: ({ App, props, plugin }) => {
       return createSSRApp({
         render: () => h(TuyauProvider, { client }, { default: () => h(App, props) }),
-      }).use(plugin)
+      })
+        .use(plugin)
+        .use(i18n)
     },
   })
 }
