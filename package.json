@@ -66,6 +66,7 @@
     "@adonisjs/static": "^2.0.0-next.1",
     "@adonisjs/vite": "^5.1.0-next.4",
     "@inertiajs/vue3": "^2.3.11",
+    "@jrmc/adonis-lucid-commands": "^1.1.1",
     "@tuyau/core": "^1.0.0-beta.16",
     "@vinejs/vine": "^4.2.0",
     "better-sqlite3": "^12.6.2",
