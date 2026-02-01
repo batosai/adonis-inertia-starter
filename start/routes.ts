@@ -7,6 +7,7 @@
 |
 */
 
+import app from '@adonisjs/core/services/app'
 import { middleware } from '#start/kernel'
 import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
@@ -28,3 +29,8 @@ router
     router.post('logout', [controllers.Session, 'destroy'])
   })
   .use(middleware.auth())
+
+if (app.inDev) {
+  router.get('mails/preview', [controllers.PreviewEmails, 'index'])
+  router.get('mails/preview/:name', [controllers.PreviewEmails, 'show'])
+}

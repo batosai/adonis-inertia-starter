@@ -12,4 +12,8 @@ export interface ApiDefinition {
     store: typeof routes['session.store']
     destroy: typeof routes['session.destroy']
   }
+  previewEmails: {
+    index: typeof routes['preview_emails.index']
+    show: typeof routes['preview_emails.show']
+  }
 }

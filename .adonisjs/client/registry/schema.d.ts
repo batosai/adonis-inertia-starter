@@ -71,4 +71,26 @@ export interface Registry {
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/session_controller').default['destroy']>>>
     }
   }
+  'preview_emails.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/mails/preview'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/preview_emails_controller').default['index']>>>
+    }
+  }
+  'preview_emails.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/mails/preview/:name'
+    types: {
+      body: {}
+      paramsTuple: [string]
+      params: { name: string }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/preview_emails_controller').default['show']>>>
+    }
+  }
 }

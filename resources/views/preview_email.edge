@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Email Templates</title>
+          <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-50">
+    <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mx-auto">
+        <!-- Header -->
+        <div class="mb-8">
+          <h1 class="text-3xl font-bold text-gray-900">Email Templates</h1>
+            <p class="text-gray-600 mt-2">Sélectionnez un template pour l'aperçu</p>
+        </div>
+        
+        <!-- Liste -->
+        <div class="bg-white rounded-lg shadow border border-gray-200 overflow-hidden">
+          <ul class="divide-y divide-gray-200">
+            @each (file in files)
+            <li>
+              <a
+              href="{{ urlFor('preview_emails.show', { name: file }) }}"
+              class="block px-6 py-4 hover:bg-blue-50 transition-colors duration-150 group"
+              >
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  <span class="font-medium text-gray-900 group-hover:text-blue-600">{{ file }}</span>
+                </div>
+                <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+              </a>
+            </li>
+            @end
+          </ul>
+        </div>
+        
+        <!-- Empty state -->
+        @if (files.length === 0)
+        <div class="text-center py-12">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          <h3 class="mt-2 text-sm font-medium text-gray-900">Aucun email trouvé</h3>
+            <p class="mt-1 text-sm text-gray-500">Créez un template d'email pour commencer.</p>
+        </div>
+        @end
+      </div>
+    </div>
+  </body>
+</html>
