@@ -6,6 +6,7 @@ import { renderToString } from '@vue/server-renderer'
 import { createSSRApp, h, type DefineComponent } from 'vue'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 import i18n from './plugins/i18n'
+import ui from '@nuxt/ui/vue-plugin'
 
 export default function render(page: any) {
   return createInertiaApp({
@@ -24,6 +25,7 @@ export default function render(page: any) {
       })
         .use(plugin)
         .use(i18n)
+        .use(ui)
     },
   })
 }
