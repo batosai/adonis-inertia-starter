@@ -39,6 +39,11 @@ a {
   display: none;
 }
 
+/* Hide the password reveal button in Edge */
+::-ms-reveal {
+  display: none;
+}
+
 h1,
 h2,
 h3,
