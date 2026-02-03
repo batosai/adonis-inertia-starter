@@ -32,5 +32,5 @@ router
 
 if (app.inDev) {
   router.get('mails/preview', [controllers.PreviewEmails, 'index'])
-  router.get('mails/preview/:name', [controllers.PreviewEmails, 'show'])
+  router.get('mails/preview/*', [controllers.PreviewEmails, 'show'])
 }

@@ -84,11 +84,11 @@ export interface Registry {
   }
   'preview_emails.show': {
     methods: ["GET","HEAD"]
-    pattern: '/mails/preview/:name'
+    pattern: '/mails/preview/*'
     types: {
       body: {}
-      paramsTuple: [string]
-      params: { name: string }
+      paramsTuple: []
+      params: {}
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/preview_emails_controller').default['show']>>>
     }

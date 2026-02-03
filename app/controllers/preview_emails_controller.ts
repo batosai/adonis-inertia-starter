@@ -13,9 +13,10 @@ export default class PreviewEmailsController {
     })
   }
   async show({ view, params }: HttpContext) {
+    const path = params['*'].join('/')
     const user = await UserFactory.create()
 
-    return view.render(`mails/${params.name}`, {
+    return view.render(`mails/${path}`, {
       user,
     })
   }

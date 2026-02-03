@@ -50,8 +50,8 @@ const routes = {
   },
   'preview_emails.show': {
     methods: ["GET","HEAD"],
-    pattern: '/mails/preview/:name',
-    tokens: [{"old":"/mails/preview/:name","type":0,"val":"mails","end":""},{"old":"/mails/preview/:name","type":0,"val":"preview","end":""},{"old":"/mails/preview/:name","type":1,"val":"name","end":""}],
+    pattern: '/mails/preview/*',
+    tokens: [{"old":"/mails/preview/*","type":0,"val":"mails","end":""},{"old":"/mails/preview/*","type":0,"val":"preview","end":""},{"old":"/mails/preview/*","type":2,"val":"*","end":""}],
     types: placeholder as Registry['preview_emails.show']['types'],
   },
 } as const satisfies Record<string, AdonisEndpoint>
