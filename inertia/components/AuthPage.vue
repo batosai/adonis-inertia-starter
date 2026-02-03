@@ -1,13 +1,29 @@
 <script setup lang="ts">
   import { ref, computed } from 'vue'
   import type { TabsItem } from '@nuxt/ui'
-  import { Form } from '@adonisjs/inertia/vue'
-  import { Link } from '@adonisjs/inertia/vue'
+  import { Form, Link } from '@adonisjs/inertia/vue'
   import { router } from '@inertiajs/vue3'
 
+  type Tab = 'login' | 'signup'
+
   const props = defineProps<{
-    activeTab?: 'login' | 'signup'
+    activeTab?: Tab
   }>()
+
+  const activeTab = computed<Tab>({
+    get: () => props.activeTab ?? 'login',
+    set: (tab) => {
+      router.visit(tab === 'login' ? '/login' : '/signup', {
+        preserveState: true,
+        replace: true,
+      })
+    },
+  })
+
+  const items: TabsItem[] = [
+    { label: 'Login', value: 'login', slot: 'login' },
+    { label: 'Signup', value: 'signup', slot: 'signup' },
+  ]
 
   const showLoginPassword = ref(false)
   const showSignupPassword = ref(false)
@@ -17,25 +33,33 @@
   const signupPassword = ref('')
   const signupConfirmPassword = ref('')
 
-  function checkStrength(str: string) {
-    const requirements = [
+  function checkStrength(password: string) {
+    return [
       { regex: /.{8,}/, text: 'At least 8 characters' },
       { regex: /\d/, text: 'At least 1 number' },
       { regex: /[a-z]/, text: 'At least 1 lowercase letter' },
       { regex: /[A-Z]/, text: 'At least 1 uppercase letter' },
-    ]
-    return requirements.map((req) => ({ met: req.regex.test(str), text: req.text }))
+    ].map(rule => ({
+      met: rule.regex.test(password),
+      text: rule.text,
+    }))
   }
 
-  const passwordStrength = computed(() => checkStrength(signupPassword.value))
-  const passwordScore = computed(() => passwordStrength.value.filter((req) => req.met).length)
+  const passwordStrength = computed(() =>
+    checkStrength(signupPassword.value)
+  )
+
+  const passwordScore = computed(
+    () => passwordStrength.value.filter(r => r.met).length
+  )
+
   const passwordColor = computed(() => {
     if (passwordScore.value === 0) return 'neutral'
     if (passwordScore.value <= 1) return 'error'
-    if (passwordScore.value <= 2) return 'warning'
-    if (passwordScore.value === 3) return 'warning'
+    if (passwordScore.value <= 3) return 'warning'
     return 'success'
   })
+
   const passwordStrengthText = computed(() => {
     if (passwordScore.value === 0) return 'Enter a password'
     if (passwordScore.value <= 2) return 'Weak password'
@@ -43,17 +67,15 @@
     return 'Strong password'
   })
 
-  const items: TabsItem[] = [
-    { label: 'Login', value: 'login', slot: 'login' },
-    { label: 'Signup', value: 'signup', slot: 'signup' },
-  ]
+  const passwordsMatch = computed(
+    () =>
+      signupPassword.value.length > 0 &&
+      signupPassword.value === signupConfirmPassword.value
+  )
 
-  function onTabChange(tab: string | number) {
-    router.visit(tab === 'login' ? '/login' : '/signup', {
-      preserveState: true,
-      replace: true,
-    })
-  }
+  const canSubmitSignup = computed(
+    () => passwordScore.value === 4 && passwordsMatch.value
+  )
 </script>
 
 <template>
@@ -75,28 +97,28 @@
     </Link>
 
     <UTabs
-      :model-value="props.activeTab ?? 'login'"
+      v-model="activeTab"
       :items="items"
       color="neutral"
       variant="pill"
       class="w-full max-w-2xl gap-8"
       :ui="{ root: 'gap-8', content: 'min-h-[480px] w-full' }"
-      @update:model-value="onTabChange"
     >
+      <!-- LOGIN -->
       <template #login>
         <Form route="session.store" #default="{ processing, errors }">
           <div class="grid grid-cols-12 gap-4">
             <UFormField
               label="Email"
-              for="email"
+              for="login-email"
               name="email"
-              :error="errors.email ? errors.email : undefined"
+              :error="errors.email"
               class="col-span-12"
             >
               <UInput
+                id="login-email"
                 type="email"
                 name="email"
-                id="email"
                 autocomplete="username"
                 class="w-full"
                 :data-invalid="errors.email ? 'true' : undefined"
@@ -105,19 +127,18 @@
 
             <UFormField
               label="Password"
-              for="password"
+              for="login-password"
               name="password"
-              :error="errors.password ? errors.password : undefined"
+              :error="errors.password"
               class="col-span-12"
             >
               <UInput
                 v-model="loginPassword"
                 :type="showLoginPassword ? 'text' : 'password'"
+                id="login-password"
                 name="password"
-                id="password"
-                class="w-full"
                 autocomplete="current-password"
-                :data-invalid="errors.password ? 'true' : undefined"
+                class="w-full"
                 :ui="{ trailing: 'pe-1' }"
               >
                 <template #trailing>
@@ -126,9 +147,6 @@
                     variant="link"
                     size="sm"
                     :icon="showLoginPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
-                    :aria-label="showLoginPassword ? 'Hide password' : 'Show password'"
-                    :aria-pressed="showLoginPassword"
-                    aria-controls="password"
                     type="button"
                     @click="showLoginPassword = !showLoginPassword"
                   />
@@ -143,75 +161,30 @@
         </Form>
       </template>
 
+      <!-- SIGNUP -->
       <template #signup>
         <Form route="new_account.store" #default="{ processing, errors }">
           <div class="grid grid-cols-12 gap-4">
-            <UFormField
-              label="First name"
-              for="firstName"
-              name="firstName"
-              :error="errors.firstName ? errors.firstName : undefined"
-              class="col-span-6"
-            >
-              <UInput
-                type="text"
-                name="firstName"
-                id="firstName"
-                :data-invalid="errors.firstName ? 'true' : undefined"
-                class="w-full"
-              />
+            <UFormField label="First name" name="firstName" class="col-span-6">
+              <UInput id="first-name" name="firstName" class="w-full" />
             </UFormField>
 
-            <UFormField
-              label="Last name"
-              for="lastName"
-              name="lastName"
-              :error="errors.lastName ? errors.lastName : undefined"
-              class="col-span-6"
-            >
-              <UInput
-                type="text"
-                name="lastName"
-                id="lastName"
-                :data-invalid="errors.lastName ? 'true' : undefined"
-                class="w-full"
-              />
+            <UFormField label="Last name" name="lastName" class="col-span-6">
+              <UInput id="last-name" name="lastName" class="w-full" />
             </UFormField>
 
-            <UFormField
-              label="Email"
-              for="email"
-              name="email"
-              :error="errors.email ? errors.email : undefined"
-              class="col-span-12"
-            >
-              <UInput
-                type="email"
-                name="email"
-                id="email"
-                autocomplete="email"
-                :data-invalid="errors.email ? 'true' : undefined"
-                class="w-full"
-              />
+            <UFormField label="Email" name="email" class="col-span-12">
+              <UInput id="signup-email" type="email" name="email" class="w-full" />
             </UFormField>
 
             <div class="col-span-12 space-y-2">
-              <UFormField
-                label="Password"
-                for="password"
-                name="password"
-                :error="errors.password ? errors.password : undefined"
-              >
+              <UFormField label="Password" name="password">
                 <UInput
                   v-model="signupPassword"
                   :type="showSignupPassword ? 'text' : 'password'"
-                  name="password"
-                  id="password"
+                  id="signup-password"
                   autocomplete="new-password"
-                  :color="signupPassword.length > 0 ? passwordColor : 'neutral'"
-                  :aria-invalid="signupPassword.length > 0 && passwordScore < 4"
-                  :aria-describedby="signupPassword.length > 0 ? 'password-strength' : undefined"
-                  :data-invalid="errors.password ? 'true' : undefined"
+                  :color="signupPassword.length ? passwordColor : 'neutral'"
                   class="w-full"
                   :ui="{ trailing: 'pe-1' }"
                 >
@@ -221,9 +194,6 @@
                       variant="link"
                       size="sm"
                       :icon="showSignupPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
-                      :aria-label="showSignupPassword ? 'Hide password' : 'Show password'"
-                      :aria-pressed="showSignupPassword"
-                      aria-controls="password"
                       type="button"
                       @click="showSignupPassword = !showSignupPassword"
                     />
@@ -231,12 +201,12 @@
                 </UInput>
               </UFormField>
 
-              <template v-if="signupPassword.length > 0">
+              <template v-if="signupPassword.length">
                 <UProgress
-                  :color="passwordColor"
-                  :indicator="passwordStrengthText"
                   :model-value="passwordScore"
                   :max="4"
+                  :color="passwordColor"
+                  :indicator="passwordStrengthText"
                   size="sm"
                 />
 
@@ -248,7 +218,7 @@
                   <li
                     v-for="(req, index) in passwordStrength"
                     :key="index"
-                    class="flex items-center gap-0.5"
+                    class="flex items-center gap-1"
                     :class="req.met ? 'text-success' : 'text-muted'"
                   >
                     <UIcon
@@ -257,27 +227,22 @@
                     />
                     <span class="text-xs font-light">
                       {{ req.text }}
-                      <span class="sr-only">{{ req.met ? ' - Requirement met' : ' - Requirement not met' }}</span>
+                      <span class="sr-only">
+                        {{ req.met ? 'Requirement met' : 'Requirement not met' }}
+                      </span>
                     </span>
                   </li>
                 </ul>
               </template>
+
             </div>
 
-            <UFormField
-              label="Confirm password"
-              for="passwordConfirmation"
-              name="passwordConfirmation"
-              :error="errors.passwordConfirmation ? errors.passwordConfirmation : undefined"
-              class="col-span-12"
-            >
+            <UFormField label="Confirm password" name="passwordConfirmation" class="col-span-12">
               <UInput
                 v-model="signupConfirmPassword"
                 :type="showSignupConfirmPassword ? 'text' : 'password'"
-                name="passwordConfirmation"
-                id="passwordConfirmation"
+                id="signup-password-confirmation"
                 autocomplete="new-password"
-                :data-invalid="errors.passwordConfirmation ? 'true' : undefined"
                 class="w-full"
                 :ui="{ trailing: 'pe-1' }"
               >
@@ -287,9 +252,6 @@
                     variant="link"
                     size="sm"
                     :icon="showSignupConfirmPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
-                    :aria-label="showSignupConfirmPassword ? 'Hide password' : 'Show password'"
-                    :aria-pressed="showSignupConfirmPassword"
-                    aria-controls="passwordConfirmation"
                     type="button"
                     @click="showSignupConfirmPassword = !showSignupConfirmPassword"
                   />
@@ -300,7 +262,7 @@
             <div class="col-span-12 text-center">
               <UButton
                 type="submit"
-                :disabled="processing"
+                :disabled="processing || !canSubmitSignup"
                 color="neutral"
                 label="Sign up"
               />
