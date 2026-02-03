@@ -1,5 +1,9 @@
 <template>
-  <div class="container">
-    <h1>Something went wrong.</h1>
-  </div>
+  <UError
+    :error="{
+      statusCode: 500,
+      statusMessage: 'Server error',
+      message: 'Something went wrong.'
+    }"
+  />
 </template>
