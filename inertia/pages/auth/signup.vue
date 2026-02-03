@@ -3,76 +3,94 @@ import { Form } from '@adonisjs/inertia/vue'
 </script>
 
 <template>
-  <div class="form-container">
-    <div>
-      <h1>Signup</h1>
-      <p>Enter your details below to create your account</p>
+  <div class="flex flex-col items-center justify-center h-screen">
+    <div class="mb-6 text-center">
+      <h1 class="text-2xl font-bold">Signup</h1>
+      <p class="text-gray-500">Enter your details below to create your account</p>
     </div>
 
-    <div>
-      <Form route="new_account.store" #default="{ processing, errors }">
-        <div>
-          <label for="fullName">First name</label>
-          <input
+    <Form route="new_account.store" #default="{ processing, errors }">
+      <div class="grid grid-cols-1 gap-4">
+        <UFormField 
+          label="First name" 
+          for="firstName" 
+          name="firstName"
+          :error="errors.firstName ? errors.firstName : undefined"
+        >
+          <UInput
             type="text"
             name="firstName"
             id="firstName"
             :data-invalid="errors.firstName ? 'true' : undefined"
           />
-          <div v-if="errors.firstName">{{ errors.firstName }}</div>
-        </div>
-
-        <div>
-          <label for="lastName">Last name</label>
-          <input
+        </UFormField>
+  
+        <UFormField 
+          label="Last name" 
+          for="lastName" 
+          name="lastName" 
+          :error="errors.lastName ? errors.lastName : undefined"
+        >
+          <UInput
             type="text"
             name="lastName"
             id="lastName"
             :data-invalid="errors.lastName ? 'true' : undefined"
           />
-          <div v-if="errors.lastName">{{ errors.lastName }}</div>
-        </div>
-
-        <div>
-          <label for="email">Email</label>
-          <input
+        </UFormField>
+  
+        <UFormField 
+          label="Email" 
+          for="email" 
+          name="email" 
+          :error="errors.email ? errors.email : undefined"
+        >
+          <UInput
             type="email"
             name="email"
             id="email"
             autocomplete="email"
             :data-invalid="errors.email ? 'true' : undefined"
           />
-          <div v-if="errors.email">{{ errors.email }}</div>
-        </div>
-
-        <div>
-          <label for="password">Password</label>
-          <input
+        </UFormField>
+  
+        <UFormField 
+          label="Password" 
+          for="password" 
+          name="password" 
+          :error="errors.password ? errors.password : undefined"
+        >
+          <UInput
             type="password"
             name="password"
             id="password"
             autocomplete="new-password"
             :data-invalid="errors.password ? 'true' : undefined"
           />
-          <div v-if="errors.password">{{ errors.password }}</div>
-        </div>
-
-        <div>
-          <label for="passwordConfirmation">Confirm password</label>
-          <input
+        </UFormField>
+  
+        <UFormField 
+          label="Confirm password" 
+          for="passwordConfirmation" 
+          name="passwordConfirmation" 
+          :error="errors.passwordConfirmation ? errors.passwordConfirmation : undefined"
+        >
+          <UInput
             type="password"
             name="passwordConfirmation"
             id="passwordConfirmation"
             autocomplete="new-password"
             :data-invalid="errors.passwordConfirmation ? 'true' : undefined"
           />
-          <div v-if="errors.passwordConfirmation">{{ errors.passwordConfirmation }}</div>
-        </div>
-
-        <div>
-          <button type="submit" class="button" :disabled="processing">Sign up</button>
-        </div>
-      </Form>
-    </div>
+        </UFormField>
+  
+        <UButton 
+          type="submit"
+          :disabled="processing"
+          color="primary"
+          label="Sign up"
+        />
+      </div>
+    </Form>
   </div>
 </template>
