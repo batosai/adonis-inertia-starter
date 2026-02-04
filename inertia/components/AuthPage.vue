@@ -66,16 +66,6 @@
     if (passwordScore.value === 3) return 'Medium password'
     return 'Strong password'
   })
-
-  const passwordsMatch = computed(
-    () =>
-      signupPassword.value.length > 0 &&
-      signupPassword.value === signupConfirmPassword.value
-  )
-
-  const canSubmitSignup = computed(
-    () => passwordScore.value === 4 && passwordsMatch.value
-  )
 </script>
 
 <template>
@@ -114,6 +104,7 @@
               name="email"
               :error="errors.email"
               class="col-span-12"
+              required
             >
               <UInput
                 id="login-email"
@@ -131,6 +122,7 @@
               name="password"
               :error="errors.password"
               class="col-span-12"
+              required
             >
               <UInput
                 v-model="loginPassword"
@@ -173,18 +165,25 @@
               <UInput id="last-name" name="lastName" class="w-full" />
             </UFormField>
 
-            <UFormField label="Email" name="email" class="col-span-12">
-              <UInput id="signup-email" type="email" name="email" class="w-full" />
+            <UFormField label="Email" name="email" :error="errors.email" required class="col-span-12">
+              <UInput id="signup-email" type="email" name="email" class="w-full" :data-invalid="errors.email ? 'true' : undefined" />
             </UFormField>
 
             <div class="col-span-12 space-y-2">
-              <UFormField label="Password" name="password">
+              <UFormField
+                label="Password"
+                name="password"
+                :error="errors.password"
+                required
+              >
                 <UInput
                   v-model="signupPassword"
                   :type="showSignupPassword ? 'text' : 'password'"
                   id="signup-password"
                   autocomplete="new-password"
                   :color="signupPassword.length ? passwordColor : 'neutral'"
+                  :aria-invalid="passwordScore < 4"
+                  aria-describedby="password-strength"
                   class="w-full"
                   :ui="{ trailing: 'pe-1' }"
                 >
@@ -194,6 +193,9 @@
                       variant="link"
                       size="sm"
                       :icon="showSignupPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+                      :aria-label="showSignupPassword ? 'Hide password' : 'Show password'"
+                      :aria-pressed="showSignupPassword"
+                      aria-controls="signup-password"
                       type="button"
                       @click="showSignupPassword = !showSignupPassword"
                     />
@@ -203,10 +205,10 @@
 
               <template v-if="signupPassword.length">
                 <UProgress
-                  :model-value="passwordScore"
-                  :max="4"
                   :color="passwordColor"
                   :indicator="passwordStrengthText"
+                  :model-value="passwordScore"
+                  :max="4"
                   size="sm"
                 />
 
@@ -218,7 +220,7 @@
                   <li
                     v-for="(req, index) in passwordStrength"
                     :key="index"
-                    class="flex items-center gap-1"
+                    class="flex items-center gap-0.5"
                     :class="req.met ? 'text-success' : 'text-muted'"
                   >
                     <UIcon
@@ -228,16 +230,20 @@
                     <span class="text-xs font-light">
                       {{ req.text }}
                       <span class="sr-only">
-                        {{ req.met ? 'Requirement met' : 'Requirement not met' }}
+                        {{ req.met ? ' - Requirement met' : ' - Requirement not met' }}
                       </span>
                     </span>
                   </li>
                 </ul>
               </template>
-
             </div>
 
-            <UFormField label="Confirm password" name="passwordConfirmation" class="col-span-12">
+            <UFormField 
+              label="Confirm password" 
+              name="passwordConfirmation" 
+              :error="errors.passwordConfirmation" 
+              required class="col-span-12"
+            >
               <UInput
                 v-model="signupConfirmPassword"
                 :type="showSignupConfirmPassword ? 'text' : 'password'"
@@ -262,7 +268,7 @@
             <div class="col-span-12 text-center">
               <UButton
                 type="submit"
-                :disabled="processing || !canSubmitSignup"
+                :disabled="processing"
                 color="neutral"
                 label="Sign up"
               />
