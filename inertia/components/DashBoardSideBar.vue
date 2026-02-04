@@ -105,7 +105,7 @@ const userMenuItems: DropdownMenuItem[][] = [
         :label="collapsed ? undefined : 'Search...'"
         icon="i-lucide-search"
         color="neutral"
-        variant="ghost"
+        variant="outline"
         block
         :square="collapsed"
       >
