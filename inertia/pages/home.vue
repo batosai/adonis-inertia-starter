@@ -18,6 +18,8 @@
       <template #header>
         <UDashboardNavbar title="Dashboard">
           <template #left>
+            <UDashboardSidebarCollapse variant="subtle" />
+
             <UDashboardNavbarTitle>Dashboard</UDashboardNavbarTitle>
           </template>
           <template #right>
