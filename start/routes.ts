@@ -26,6 +26,8 @@ router
 
 router
   .group(() => {
+    router.get('contacts', [controllers.Contacts, 'index']).as('contacts.index')
+    router.get('contacts/:id', [controllers.Contacts, 'show']).as('contacts.show')
     router.post('logout', [controllers.Session, 'destroy'])
   })
   .use(middleware.auth())
