@@ -60,6 +60,28 @@ export interface Registry {
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/session_controller').default['store']>>>
     }
   }
+  'contacts.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/contacts'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/contacts_controller').default['index']>>>
+    }
+  }
+  'contacts.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/contacts/:id'
+    types: {
+      body: {}
+      paramsTuple: [string]
+      params: { id: string }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/contacts_controller').default['show']>>>
+    }
+  }
   'session.destroy': {
     methods: ["POST"]
     pattern: '/logout'

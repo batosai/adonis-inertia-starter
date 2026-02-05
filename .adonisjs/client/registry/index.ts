@@ -36,6 +36,18 @@ const routes = {
     tokens: [{"old":"/login","type":0,"val":"login","end":""}],
     types: placeholder as Registry['session.store']['types'],
   },
+  'contacts.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/contacts',
+    tokens: [{"old":"/contacts","type":0,"val":"contacts","end":""}],
+    types: placeholder as Registry['contacts.index']['types'],
+  },
+  'contacts.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/contacts/:id',
+    tokens: [{"old":"/contacts/:id","type":0,"val":"contacts","end":""},{"old":"/contacts/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['contacts.show']['types'],
+  },
   'session.destroy': {
     methods: ["POST"],
     pattern: '/logout',
