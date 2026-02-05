@@ -1,83 +1,70 @@
 <script setup lang="ts">
-import type { NavigationMenuItem, DropdownMenuItem } from '@nuxt/ui'
+  import type { NavigationMenuItem, DropdownMenuItem } from '@nuxt/ui'
 
-const items: NavigationMenuItem[][] = [
-  [
-    {
-      label: 'Home',
-      icon: 'i-lucide-house',
-      active: true,
-    },
-    {
-      label: 'Inbox',
-      icon: 'i-lucide-inbox',
-      badge: '4',
-    },
-    {
-      label: 'Contacts',
-      icon: 'i-lucide-users',
-    },
-    {
-      label: 'Settings',
-      icon: 'i-lucide-settings',
-      defaultOpen: true,
-      children: [
-        {
-          label: 'General',
-        },
-        {
-          label: 'Members',
-        },
-        {
-          label: 'Notifications',
-        },
-      ],
-    },
-  ],
-  [
-    {
-      label: 'Feedback',
-      icon: 'i-lucide-message-circle',
-      to: 'https://github.com/nuxt-ui-templates/dashboard',
-      target: '_blank',
-    },
-    {
-      label: 'Help & Support',
-      icon: 'i-lucide-info',
-      to: 'https://github.com/nuxt/ui',
-      target: '_blank',
-    },
-  ],
-]
+  const items: NavigationMenuItem[][] = [
+    [
+      {
+        label: 'Home',
+        icon: 'i-lucide-house',
+        to: '/',
+        exact: true,
+      },
+      {
+        label: 'Contacts',
+        icon: 'i-lucide-users',
+        to: '/contacts',
+      },
+      {
+        label: 'Settings',
+        icon: 'i-lucide-settings',
+        defaultOpen: true,
+        children: [
+          { label: 'General' },
+          { label: 'Members' },
+          { label: 'Notifications' },
+        ],
+      },
+    ],
+    [
+      {
+        label: 'Feedback',
+        icon: 'i-lucide-message-circle',
+        to: 'https://github.com/nuxt-ui-templates/dashboard',
+        target: '_blank',
+      },
+      {
+        label: 'Help & Support',
+        icon: 'i-lucide-info',
+        to: 'https://github.com/nuxt/ui',
+        target: '_blank',
+      },
+    ],
+  ]
 
-const headerMenuItems: DropdownMenuItem[][] = [
-  [
-    { label: 'View', icon: 'i-lucide-eye' },
-    { label: 'Copy', icon: 'i-lucide-copy' },
-    { label: 'Edit', icon: 'i-lucide-pencil' },
-  ],
-  [
-    { label: 'Delete', color: 'error', icon: 'i-lucide-trash' },
-  ],
-]
+  const headerMenuItems: DropdownMenuItem[][] = [
+    [
+      { label: 'View', icon: 'i-lucide-eye' },
+      { label: 'Copy', icon: 'i-lucide-copy' },
+      { label: 'Edit', icon: 'i-lucide-pencil' },
+    ],
+    [{ label: 'Delete', color: 'error', icon: 'i-lucide-trash' }],
+  ]
 
-const userMenuItems: DropdownMenuItem[][] = [
-  [
-    {
-      label: 'Benjamin',
-      avatar: { src: 'https://github.com/benjamincanac.png' },
-      type: 'label',
-    },
-  ],
-  [
-    { label: 'Profile', icon: 'i-lucide-user' },
-    { label: 'Billing', icon: 'i-lucide-credit-card' },
-    { label: 'Settings', icon: 'i-lucide-cog' },
-  ],
-  [
-    { label: 'Logout', icon: 'i-lucide-log-out', color: 'error' },
-  ],
-]
+  const userMenuItems: DropdownMenuItem[][] = [
+    [
+      {
+        label: 'Benjamin',
+        avatar: { src: 'https://github.com/benjamincanac.png' },
+        type: 'label',
+      },
+    ],
+    [
+      { label: 'Profile', icon: 'i-lucide-user' },
+      { label: 'Billing', icon: 'i-lucide-credit-card' },
+      { label: 'Settings', icon: 'i-lucide-cog' },
+    ],
+    [{ label: 'Logout', icon: 'i-lucide-log-out', color: 'error' }],
+  ]
 </script>
 
 <template>
