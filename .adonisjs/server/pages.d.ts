@@ -9,11 +9,11 @@ type ExtractProps<T> = Omit<
 
 declare module '@adonisjs/inertia/types' {
   export interface InertiaPages {
-    'auth/index': ExtractProps<(typeof import('../../inertia/pages/auth/index.vue'))['default']>
+    'auth/Index': ExtractProps<(typeof import('../../inertia/pages/auth/Index.vue'))['default']>
+    'contacts/Index': ExtractProps<(typeof import('../../inertia/pages/contacts/Index.vue'))['default']>
+    'contacts/Show': ExtractProps<(typeof import('../../inertia/pages/contacts/Show.vue'))['default']>
     'errors/not_found': ExtractProps<(typeof import('../../inertia/pages/errors/not_found.vue'))['default']>
     'errors/server_error': ExtractProps<(typeof import('../../inertia/pages/errors/server_error.vue'))['default']>
     'home': ExtractProps<(typeof import('../../inertia/pages/home.vue'))['default']>
-    'contacts/Index': ExtractProps<(typeof import('../../inertia/pages/contacts/Index.vue'))['default']>
-    'contacts/Show': ExtractProps<(typeof import('../../inertia/pages/contacts/Show.vue'))['default']>
   }
 }

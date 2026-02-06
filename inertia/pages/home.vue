@@ -1,11 +1,17 @@
 <script setup lang="ts">
-  import { Head, usePage } from '@inertiajs/vue3'
+  import { Head, usePage, router } from '@inertiajs/vue3'
+  import { watchEffect } from 'vue'
   import Sidebar from '~/components/layout/Sidebar.vue'
   import Topbar from '~/components/layout/Topbar.vue'
-  import AuthPage from '~/components/AuthPage.vue'
   import type { Data } from '@generated/data'
 
   const page = usePage<Data.SharedProps>()
+
+  watchEffect(() => {
+    if (!page.props.user) {
+      router.visit('/login', { replace: true })
+    }
+  })
 </script>
 
 <template>
@@ -23,6 +29,4 @@
       </template>
     </UDashboardPanel>
   </UDashboardGroup>
-
-  <AuthPage v-else active-tab="login" />
 </template>

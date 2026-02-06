@@ -7,7 +7,7 @@ import NewAccountNotification from '#mails/new_account_notification'
 
 export default class NewAccountController {
   async create({ inertia }: HttpContext) {
-    return inertia.render('auth/index', { tab: 'signup' })
+    return inertia.render('auth/Index', { tab: 'signup' })
   }
 
   async store({ request, response, auth }: HttpContext) {

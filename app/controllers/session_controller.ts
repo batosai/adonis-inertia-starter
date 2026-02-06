@@ -3,7 +3,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 
 export default class SessionController {
   async create({ inertia }: HttpContext) {
-    return inertia.render('auth/index', { tab: 'login' })
+    return inertia.render('auth/Index', { tab: 'login' })
   }
 
   async store({ request, auth, response }: HttpContext) {
