@@ -14,6 +14,6 @@ declare module '@adonisjs/inertia/types' {
     'contacts/Show': ExtractProps<(typeof import('../../inertia/pages/contacts/Show.vue'))['default']>
     'errors/not_found': ExtractProps<(typeof import('../../inertia/pages/errors/not_found.vue'))['default']>
     'errors/server_error': ExtractProps<(typeof import('../../inertia/pages/errors/server_error.vue'))['default']>
-    'home': ExtractProps<(typeof import('../../inertia/pages/home.vue'))['default']>
+    'Home': ExtractProps<(typeof import('../../inertia/pages/Home.vue'))['default']>
   }
 }
